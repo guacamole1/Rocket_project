@@ -1,69 +1,11 @@
 #include <L3G4200D.h>
 #include <SoftwareSerial.h> 
 char c = ' ';
-/***************************************************************************************************************
-* Razor AHRS Firmware v1.4.0
-* 9 Degree of Measurement Attitude and Heading Reference System
-* for Sparkfun "9DOF Razor IMU" (SEN-10125 and SEN-10736)
-* and "9DOF Sensor Stick" (SEN-10183, 10321 and SEN-10724)
-*
-* Released under GNU GPL (General Public License) v3.0
-* Copyright (C) 2011 Quality & Usability Lab, Deutsche Telekom Laboratories, TU Berlin
-*
-* Infos, updates, bug reports and feedback:
-*     http://dev.qu.tu-berlin.de/projects/sf-razor-9dof-ahrs
-*
-*
-* History:
-*   * Original code (http://code.google.com/p/sf9domahrs/) by Doug Weibel and Jose Julio,
-*     based on ArduIMU v1.5 by Jordi Munoz and William Premerlani, Jose Julio and Doug Weibel. Thank you!
-*
-*   * Updated code (http://groups.google.com/group/sf_9dof_ahrs_update) by David Malik (david.zsolt.malik@gmail.com)
-*     for new Sparkfun 9DOF Razor hardware (SEN-10125).
-*
-*   * Updated and extended by Peter Bartz (peter-bartz@gmx.de):
-*     * v1.3.0
-*       * Cleaned up, streamlined and restructured most of the code to make it more comprehensible.
-*       * Added sensor calibration (improves precision and responsiveness a lot!).
-*       * Added binary yaw/pitch/roll output.
-*       * Added basic serial command interface to set output modes/calibrate sensors/synch stream/etc.
-*       * Added support to synch automatically when using Rovering Networks Bluetooth modules (and compatible).
-*       * Wrote new easier to use test program (using Processing).
-*       * Added support for new version of "9DOF Razor IMU": SEN-10736.
-*       --> The output of this code is not compatible with the older versions!
-*       --> A Processing sketch to test the tracker is available.
-*     * v1.3.1
-*       * Initializing rotation matrix based on start-up sensor readings -> orientation OK right away.
-*       * Adjusted gyro low-pass filter and output rate settings.
-*     * v1.3.2
-*       * Adapted code to work with new Arduino 1.0 (and older versions still).
-*     * v1.3.3
-*       * Improved synching.
-*     * v1.4.0
-*       * Added support for SparkFun "9DOF Sensor Stick" (versions SEN-10183, SEN-10321 and SEN-10724).
-*
-* TODOs:
-*   * Allow optional use of EEPROM for storing and reading calibration values.
-*   * Use self-test and temperature-compensation features of the sensors.
-*   * Add binary output of unfused sensor data for all 9 axes.
-***************************************************************************************************************/
 
-// OUTPUT OPTIONS
-/*****************************************************************/
-// Set your serial port baud rate used to send out data here!
 #define OUTPUT_BAUD_RATE 115200
 
-// Sensor data output interval in milliseconds
-// This may not work, if faster than 20ms (=50Hz)
-// Code is tuned for 20ms, so better leave it like that
 #define OUTPUT_DATA_INTERVAL 20  // in milliseconds
 
-// SENSOR CALIBRATION
-/*****************************************************************/
-// How to calibrate? Read the tutorial at http://dev.qu.tu-berlin.de/projects/sf-razor-9dof-ahrs
-// Put MIN/MAX and OFFSET readings for your board here!
-// Accelerometer
-// "accel x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
 #define ACCEL_X_MIN (-250.0f)
 #define ACCEL_X_MAX (250.0f)
 #define ACCEL_Y_MIN (-250.0f)
